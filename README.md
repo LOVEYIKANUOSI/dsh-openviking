@@ -33,7 +33,28 @@ compaction 前提交抽取，以及模型可直接调用的 OpenViking MCP 工�
 
 ## 安装
 
-GitHub 克隆（推荐给其他机器）：
+### 一键安装（推荐，与官方 OpenViking 插件同款体验）
+
+Windows（PowerShell 5.1+）：
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -Command "iex (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/LOVEYIKANUOSI/dsh-openviking/main/install.ps1')"
+```
+
+Linux / macOS / WSL：
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/LOVEYIKANUOSI/dsh-openviking/main/install.sh)
+```
+
+脚本会依次：检查 dsh/git/node/pnpm → 克隆源码到 `~/.dsh/plugins/dsh-openviking`
+→ 安装依赖 → `dsh plugin --profile web add` → 校验配置组合 → 提示凭据配置。
+全部步骤幂等，可安全重复执行。可选参数：`--profile`（默认 `web`）、
+`--install-dir`、`--branch`。
+
+### 手动安装
+
+GitHub 克隆：
 
 ```powershell
 git clone https://github.com/LOVEYIKANUOSI/dsh-openviking.git
@@ -130,6 +151,8 @@ dsh web --dump-config | Select-String -Context 2 "openviking"
 dsh-openviking/
 ├── package.json          # dsh.bundle.patch 声明
 ├── cordis.patch.yml      # bundle 层：insert `openviking` 条目
+├── install.ps1           # Windows 一键安装脚本（PowerShell 5.1+）
+├── install.sh            # Linux/macOS/WSL 一键安装脚本
 ├── lib/
 │   ├── index.js          # 主 Cordis 插件：事件钩子 + MCP 桥
 │   ├── config.js         # 配置加载（DSH 路径）
@@ -138,8 +161,10 @@ dsh-openviking/
 │   ├── memory-recall.js  # 召回（agent/pre-step 注入）
 │   ├── mcp-bridge.js     # MCP 工具注册（ctx.tools）
 │   └── shared/           # 官方插件共享模块（原样复用）
-└── servers/
-    └── mcp-proxy.mjs     # OpenViking stdio MCP proxy
+├── servers/
+│   └── mcp-proxy.mjs     # OpenViking stdio MCP proxy
+└── tests/
+    └── verify-e2e.mjs    # 端到端验证脚本
 ```
 
 端到端验证（需 OpenViking 服务器可达）：`node tests/verify-e2e.mjs`（驱动捕获 /

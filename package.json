@@ -9,6 +9,8 @@
     "lib/",
     "servers/",
     "cordis.patch.yml",
+    "install.ps1",
+    "install.sh",
     "README.md"
   ],
   "dependencies": {
