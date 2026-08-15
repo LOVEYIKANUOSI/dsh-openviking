@@ -1,0 +1,23 @@
+# dsh-openviking — OpenViking 记忆插件（bundle patch 层）
+#
+# 与官方 OpenCode/Codex 插件同款能力：
+#   1. 自动召回：每个 turn 把相关记忆注入为 synthetic user 上下文；
+#   2. 增量捕获：user/assistant/tool 消息写入 OpenViking 会话，
+#      compaction 前与插件卸载时 commit；
+#   3. MCP 工具：mcp__openviking__*（find/search/recall/remember 等）。
+#
+# 凭据与官方插件共用解析链（ovcli.conf → OPENVIKING_* 环境变量 → ov.conf），
+# 行为旋钮可用 OPENVIKING_* 环境变量，或本条目 config 按需覆盖。
+# 用户层（profiles/<name>/cordis.patch.yml）可按 id 覆盖本条目。
+
+- insert:
+    - id: openviking
+      name: dsh-openviking
+      config:
+        enabled: true
+        autoRecall:
+          enabled: true
+        autoCapture: true
+        mcp:
+          enabled: true
+          serverName: openviking

@@ -1,0 +1,23 @@
+{
+  "name": "dsh-openviking",
+  "version": "0.1.0",
+  "private": true,
+  "description": "DeepSeek Harness plugin bundle: OpenViking long-term memory — auto recall, incremental capture, commit on compaction, and the OpenViking MCP toolset",
+  "type": "module",
+  "main": "lib/index.js",
+  "files": [
+    "lib/",
+    "servers/",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "license": "MIT"
+}
