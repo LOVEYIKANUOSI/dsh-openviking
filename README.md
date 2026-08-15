@@ -16,6 +16,7 @@ compaction 前提交抽取，以及模型可直接调用的 OpenViking MCP 工�
 | 会话启动映射 + 离线队列重放 | `session.created` / `SessionStart` | `agent/session-start` |
 | 退出时 flush + commit | `dispose` | `dispose` |
 | MCP 工具（find/search/recall/remember…） | OpenViking stdio MCP proxy | 同一套 stdio MCP proxy（`servers/mcp-proxy.mjs`） |
+| 设置页（手动输入/修改 key 与地址等） | 官方配置文件 + 安装向导 | **Web 设置 → 插件 → OpenViking 标签页**（保存即时生效） |
 | 会话 id 映射 | `oc-<session>` / `cx-<session>` | `ds-<session>` |
 | 凭据解析链 | ovcli.conf → env → ov.conf | 完全相同（复用官方 shared 模块） |
 | 落盘离线队列 | `~/.openviking/pending/` | 完全相同（复用官方 shared 模块） |
@@ -81,6 +82,20 @@ dsh web --dump-config | Select-String -Context 2 "openviking"
 重启 `dsh web` 进程生效（bundle 层在启动时读取）。
 
 ## 配置
+
+### Web 设置页（推荐）
+
+重启后打开 **Web 设置 → 插件 → OpenViking** 标签页，即可手动输入和修改：
+
+- **连接凭据**：服务器地址、API Key（只写不回显，留空保持不变）、账号、用户；
+- **行为旋钮**：自动召回开关与条数上限、增量捕获开关、是否捕获助手回复、
+  commit 阈值。
+
+保存后**立即生效，无需重启**：凭据写入 `~/.openviking/ovcli.conf`（MCP 工具
+与自动召回/捕获同时热重载），行为配置写入 `~/.openviking/dsh-config.json`。
+页面底部会显示当前生效配置的来源文件。
+
+### 配置文件（等价方式）
 
 行为旋钮与官方插件一致，优先级：环境变量 > 配置文件 > 默认值。
 配置文件查找顺序（后者优先）：
@@ -155,7 +170,9 @@ dsh-openviking/
 ├── install.sh            # Linux/macOS/WSL 一键安装脚本
 ├── lib/
 │   ├── index.js          # 主 Cordis 插件：事件钩子 + MCP 桥
-│   ├── config.js         # 配置加载（DSH 路径）
+│   ├── client.js         # 浏览器半侧：设置页「OpenViking」标签（factory bundle）
+│   ├── config.js         # 配置加载 / 保存 / 热重载（DSH 路径）
+│   ├── config-http.js    # 设置页读写通道（/api/openviking/config）
 │   ├── utils.js          # fetchJSON / 日志
 │   ├── memory-session.js # 捕获 / commit / 离线队列
 │   ├── memory-recall.js  # 召回（agent/pre-step 注入）
