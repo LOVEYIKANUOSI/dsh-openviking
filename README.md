@@ -33,10 +33,20 @@ compaction 前提交抽取，以及模型可直接调用的 OpenViking MCP 工�
 
 ## 安装
 
-本地目录（开发/试用，链接式安装，改完重启即生效）：
+GitHub 克隆（推荐给其他机器）：
 
 ```powershell
-cd C:\opencode
+git clone https://github.com/LOVEYIKANUOSI/dsh-openviking.git
+cd dsh-openviking
+pnpm install          # 安装 MCP SDK 依赖（link 安装不会自动装依赖到源码目录）
+cd ..
+dsh plugin --profile web add .\dsh-openviking
+```
+
+本地已有源码目录（开发/试用，链接式安装，改完重启即生效）：
+
+```powershell
+cd <dsh-openviking 的父目录>
 dsh plugin --profile web add .\dsh-openviking
 ```
 
