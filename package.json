@@ -2,7 +2,7 @@
   "name": "dsh-openviking",
   "version": "0.2.0",
   "private": true,
-  "description": "DeepSeek Harness plugin bundle: OpenViking long-term memory — auto recall, incremental capture, commit on compaction, MCP tools, and a Web settings tab",
+  "description": "DeepSeek Harness 的 OpenViking 记忆插件：自动召回、增量捕获、compaction 前提交、OpenViking MCP 工具集；一键安装，附 Web 设置页",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
